@@ -1,0 +1,2 @@
+class PlayerLevel < ApplicationRecord
+end
