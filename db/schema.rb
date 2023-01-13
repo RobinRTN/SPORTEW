@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_13_135650) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_13_141209) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -85,6 +85,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_13_135650) do
     t.index ["user_id"], name: "index_clubs_on_user_id"
   end
 
+  create_table "conversations", force: :cascade do |t|
+    t.bigint "player_id", null: false
+    t.bigint "teacher_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["player_id"], name: "index_conversations_on_player_id"
+    t.index ["teacher_id"], name: "index_conversations_on_teacher_id"
+  end
+
   create_table "features", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -119,6 +128,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_13_135650) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["club_id"], name: "index_fields_on_club_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "conversation_id", null: false
+    t.string "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
   end
 
   create_table "player_badges", force: :cascade do |t|
@@ -255,11 +272,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_13_135650) do
   add_foreign_key "club_teachers", "clubs"
   add_foreign_key "club_teachers", "teachers"
   add_foreign_key "clubs", "users"
+  add_foreign_key "conversations", "players"
+  add_foreign_key "conversations", "teachers"
   add_foreign_key "field_sports", "fields"
   add_foreign_key "field_sports", "sports"
   add_foreign_key "field_types", "fields"
   add_foreign_key "field_types", "types"
   add_foreign_key "fields", "clubs"
+  add_foreign_key "messages", "conversations"
   add_foreign_key "player_badges", "badges"
   add_foreign_key "player_badges", "players"
   add_foreign_key "player_sports", "players"

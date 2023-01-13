@@ -3,6 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
   :recoverable, :rememberable, :validatable
+  enum type: { player: "Player", coach: "Coach", club: "Club" }
   self.inheritance_column = :type
   has_many :clubs, class_name: 'Club', foreign_key: 'user_id'
   has_many :players, class_name: 'Player', foreign_key: 'user_id'
